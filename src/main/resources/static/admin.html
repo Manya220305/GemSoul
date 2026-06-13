@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GemSoul — Admin Dashboard</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600;700&family=Cinzel:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/admin.css" />
+</head>
+<body class="admin-body">
+
+<!-- ADMIN NAV -->
+<nav class="admin-navbar">
+  <div class="admin-nav-inner">
+    <a href="index.html" class="nav-logo admin-logo">
+      <span class="logo-gem">◆</span>
+      <span class="logo-text">GemSoul</span>
+      <span class="admin-badge-nav">Admin</span>
+    </a>
+    <div class="admin-nav-right">
+      <span class="admin-time" id="admin-time"></span>
+      <a href="index.html" class="btn btn-secondary" style="padding:10px 20px;font-size:0.8rem;">
+        ← Public Site
+      </a>
+    </div>
+  </div>
+</nav>
+
+<!-- ADMIN CONTENT -->
+<div class="admin-layout">
+
+  <!-- SIDEBAR -->
+  <aside class="admin-sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Navigation</div>
+      <nav class="sidebar-nav">
+        <a href="#" class="sidebar-link active" data-tab="overview" id="tab-overview">
+          <span class="sidebar-icon">◈</span> Overview
+        </a>
+        <a href="#" class="sidebar-link" data-tab="analytics" id="tab-analytics">
+          <span class="sidebar-icon">◉</span> Analytics
+        </a>
+        <a href="#" class="sidebar-link" data-tab="recommendations" id="tab-recommendations">
+          <span class="sidebar-icon">◆</span> Recommendations
+        </a>
+        <a href="#" class="sidebar-link" data-tab="gemstones" id="tab-gemstones">
+          <span class="sidebar-icon">💎</span> Gemstones
+        </a>
+      </nav>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Quick Stats</div>
+      <div class="sidebar-stat">
+        <span class="ss-label">Total Readings</span>
+        <span class="ss-value" id="sb-total">0</span>
+      </div>
+      <div class="sidebar-stat">
+        <span class="ss-label">This Week</span>
+        <span class="ss-value" id="sb-week">0</span>
+      </div>
+    </div>
+  </aside>
+
+  <!-- MAIN CONTENT -->
+  <main class="admin-main">
+
+    <!-- OVERVIEW TAB -->
+    <div class="admin-tab active" id="tab-content-overview">
+      <div class="admin-page-header">
+        <div>
+          <h1 class="admin-page-title">Dashboard <em>Overview</em></h1>
+          <p class="admin-page-subtitle">Your cosmic recommendation platform at a glance</p>
+        </div>
+        <button class="btn btn-primary" onclick="generateDemoData()" style="padding:12px 24px;font-size:0.82rem;">
+          ✦ Generate Demo Data
+        </button>
+      </div>
+
+      <!-- KPI CARDS -->
+      <div class="kpi-grid" id="kpi-grid">
+        <div class="kpi-card" id="kpi-total">
+          <div class="kpi-icon">◆</div>
+          <div class="kpi-value" id="kpi-total-val">0</div>
+          <div class="kpi-label">Total Recommendations</div>
+          <div class="kpi-trend positive" id="kpi-total-trend">+0 this week</div>
+        </div>
+        <div class="kpi-card" id="kpi-gem">
+          <div class="kpi-icon">💎</div>
+          <div class="kpi-value" id="kpi-gem-val">—</div>
+          <div class="kpi-label">Top Gemstone</div>
+          <div class="kpi-trend" id="kpi-gem-trend">Most recommended</div>
+        </div>
+        <div class="kpi-card" id="kpi-zodiac">
+          <div class="kpi-icon">♈</div>
+          <div class="kpi-value" id="kpi-zodiac-val">—</div>
+          <div class="kpi-label">Top Zodiac Sign</div>
+          <div class="kpi-trend" id="kpi-zodiac-trend">Most frequent</div>
+        </div>
+        <div class="kpi-card" id="kpi-week">
+          <div class="kpi-icon">🌟</div>
+          <div class="kpi-value" id="kpi-week-val">0</div>
+          <div class="kpi-label">Readings This Week</div>
+          <div class="kpi-trend positive" id="kpi-week-trend">Current week</div>
+        </div>
+      </div>
+
+      <!-- CHARTS ROW 1 -->
+      <div class="charts-row">
+        <div class="chart-card chart-wide">
+          <div class="chart-header">
+            <h3 class="chart-title">Recommendation Trends</h3>
+            <div class="chart-badge">Last 7 Days</div>
+          </div>
+          <div class="chart-area">
+            <canvas id="trendChart" height="200"></canvas>
+          </div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-header">
+            <h3 class="chart-title">Purpose Distribution</h3>
+            <div class="chart-badge">All Time</div>
+          </div>
+          <div class="chart-area">
+            <canvas id="purposeChart" height="200"></canvas>
+          </div>
+        </div>
+      </div>
+
+      <!-- CHARTS ROW 2 -->
+      <div class="charts-row">
+        <div class="chart-card">
+          <div class="chart-header">
+            <h3 class="chart-title">Zodiac Distribution</h3>
+          </div>
+          <div class="chart-area">
+            <canvas id="zodiacChart" height="260"></canvas>
+          </div>
+        </div>
+        <div class="chart-card chart-wide">
+          <div class="chart-header">
+            <h3 class="chart-title">Gemstone Distribution</h3>
+          </div>
+          <div class="chart-area">
+            <canvas id="gemChart" height="260"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ANALYTICS TAB -->
+    <div class="admin-tab" id="tab-content-analytics">
+      <div class="admin-page-header">
+        <div>
+          <h1 class="admin-page-title">Deep <em>Analytics</em></h1>
+          <p class="admin-page-subtitle">Element and purpose breakdown insights</p>
+        </div>
+      </div>
+      <div class="charts-row">
+        <div class="chart-card">
+          <div class="chart-header"><h3 class="chart-title">Element Breakdown</h3></div>
+          <div class="chart-area"><canvas id="elementChart" height="260"></canvas></div>
+        </div>
+        <div class="chart-card">
+          <div class="chart-header"><h3 class="chart-title">Match Score Distribution</h3></div>
+          <div class="chart-area"><canvas id="scoreChart" height="260"></canvas></div>
+        </div>
+      </div>
+      <div class="chart-card" style="margin-top:24px;">
+        <div class="chart-header">
+          <h3 class="chart-title">Top 5 Gemstones Performance</h3>
+        </div>
+        <div id="gem-leaderboard" class="gem-leaderboard"></div>
+      </div>
+    </div>
+
+    <!-- RECOMMENDATIONS TAB -->
+    <div class="admin-tab" id="tab-content-recommendations">
+      <div class="admin-page-header">
+        <div>
+          <h1 class="admin-page-title">All <em>Recommendations</em></h1>
+          <p class="admin-page-subtitle">Complete history of all cosmic readings</p>
+        </div>
+        <button class="btn btn-secondary" onclick="clearAllData()" style="padding:12px 24px;font-size:0.82rem;border-color:rgba(239,68,68,0.4);color:#fca5a5;">
+          🗑 Clear Data
+        </button>
+      </div>
+      <div class="rec-table-wrap">
+        <table class="rec-table" id="rec-table">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Name</th>
+              <th>Zodiac</th>
+              <th>Gemstone</th>
+              <th>Purpose</th>
+              <th>Match</th>
+              <th>Date</th>
+            </tr>
+          </thead>
+          <tbody id="rec-table-body">
+            <tr class="rec-empty-row">
+              <td colspan="7">No recommendations yet. Visit the public site to generate readings.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- GEMSTONES TAB -->
+    <div class="admin-tab" id="tab-content-gemstones">
+      <div class="admin-page-header">
+        <div>
+          <h1 class="admin-page-title">Gemstone <em>Catalog</em></h1>
+          <p class="admin-page-subtitle">All gemstones and their association data</p>
+        </div>
+      </div>
+      <div class="admin-gem-grid" id="admin-gem-grid"></div>
+    </div>
+
+  </main>
+</div>
+
+<script src="js/data.js"></script>
+<script src="js/api.js"></script>
+<script src="js/admin.js"></script>
+</body>
+</html>

@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GemSoul — Discover Your Sacred Stone</title>
+  <meta name="description" content="Personalized gemstone recommendations based on your zodiac sign, birth details, and life goals. Discover the gemstone that matches your energy." />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600&family=Inter:wght@300;400;500;600;700&family=Cinzel:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+
+<!-- PAGE PRELOADER -->
+<div id="page-preloader" style="
+  position:fixed;inset:0;z-index:9999;
+  background:var(--navy-deep);
+  display:flex;flex-direction:column;
+  align-items:center;justify-content:center;gap:16px;
+  transition:opacity 0.5s ease;
+">
+  <div style="font-family:'Cinzel',serif;font-size:2rem;color:#c9a227;letter-spacing:4px;animation:glow 1.5s ease-in-out infinite alternate">GemSoul</div>
+  <div style="width:40px;height:2px;background:linear-gradient(90deg,transparent,#c9a227,transparent);animation:shimmer 1.5s ease-in-out infinite"></div>
+  <style>
+    @keyframes glow { from{opacity:0.5;text-shadow:none} to{opacity:1;text-shadow:0 0 30px rgba(201,162,39,0.8)} }
+    @keyframes shimmer { 0%,100%{opacity:0.3;transform:scaleX(0.5)} 50%{opacity:1;transform:scaleX(1)} }
+  </style>
+</div>
+
+<!-- NAV -->
+<nav class="navbar" id="navbar">
+  <div class="nav-container">
+    <a href="#" class="nav-logo" id="nav-logo-link">
+      <span class="logo-gem">◆</span>
+      <span class="logo-text">GemSoul</span>
+    </a>
+    <div class="nav-links" id="nav-links">
+      <a href="#zodiac-calc" class="nav-link">Zodiac Finder</a>
+      <a href="#how-it-works" class="nav-link">How It Works</a>
+      <a href="#zodiac-wheel" class="nav-link">Zodiac Explorer</a>
+      <a href="#gemstone-library" class="nav-link">Gem Library</a>
+      <a href="#recommendation-form" class="nav-link">Get Recommendation</a>
+      <a href="admin.html" class="nav-link nav-admin">Admin</a>
+    </div>
+    <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- SECTION 1: HERO -->
+<section class="hero" id="hero">
+  <canvas class="constellation-canvas" id="constellationCanvas"></canvas>
+  <div class="hero-gems-float">
+    <div class="float-gem gem-1">💎</div>
+    <div class="float-gem gem-2">🔮</div>
+    <div class="float-gem gem-3">💜</div>
+    <div class="float-gem gem-4">✨</div>
+    <div class="float-gem gem-5">🌟</div>
+    <div class="float-gem gem-6">💚</div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-badge">✦ Sacred Gemology ✦</div>
+    <h1 class="hero-title">Discover the Gemstone<br/><em>That Matches Your Energy</em></h1>
+    <p class="hero-subtitle">Get personalized gemstone recommendations based on your birth details, zodiac sign, and life goals. Align your energy with the universe.</p>
+    <div class="hero-ctas">
+      <a href="#recommendation-form" class="btn btn-primary" id="hero-primary-cta">
+        <span class="btn-icon">◆</span> Get My Recommendation
+      </a>
+      <a href="#zodiac-calc" class="btn btn-secondary" id="hero-secondary-cta">
+        ◎ Find My Zodiac Sign
+      </a>
+    </div>
+    <div class="hero-stats">
+      <div class="hero-stat"><span class="stat-num">12</span><span class="stat-label">Zodiac Signs</span></div>
+      <div class="hero-divider"></div>
+      <div class="hero-stat"><span class="stat-num">48+</span><span class="stat-label">Gemstones</span></div>
+      <div class="hero-divider"></div>
+      <div class="hero-stat"><span class="stat-num">10K+</span><span class="stat-label">Readings</span></div>
+    </div>
+  </div>
+  <div class="hero-image-container">
+    <div class="hero-gem-glow"></div>
+    <img src="images/gemstone_hero.png" alt="Luxury Gemstones" class="hero-gem-image" id="hero-gem-img" />
+  </div>
+  <div class="hero-scroll-hint">
+    <span>Scroll to explore</span>
+    <div class="scroll-arrow">↓</div>
+  </div>
+</section>
+
+<!-- SECTION 2: ZODIAC CALCULATOR -->
+<section class="section zodiac-calc-section" id="zodiac-calc">
+  <div class="section-container">
+    <div class="section-header">
+      <div class="section-badge">✦ Interactive ✦</div>
+      <h2 class="section-title">Find Your <em>Zodiac Sign</em></h2>
+      <p class="section-subtitle">Don't know your sign? Enter your birth date and instantly discover your cosmic identity.</p>
+    </div>
+    <div class="zodiac-calc-wrapper">
+      <div class="zodiac-input-panel">
+        <label class="field-label" for="zodiac-dob">Select Your Date of Birth</label>
+        <input type="date" id="zodiac-dob" class="date-input" aria-label="Date of birth for zodiac calculation" />
+        <button class="btn btn-primary btn-full" id="calc-zodiac-btn">
+          <span class="btn-icon">✦</span> Reveal My Zodiac Sign
+        </button>
+        <div class="zodiac-hint">Your sign is determined by the position of the Sun at your birth</div>
+      </div>
+      <div class="zodiac-result-panel" id="zodiac-result-panel">
+        <div class="zodiac-result-card" id="zodiac-result-card">
+          <div class="zodiac-result-placeholder">
+            <div class="placeholder-icon">☽</div>
+            <p>Enter your birth date to reveal your zodiac sign</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 3: HOW IT WORKS -->
+<section class="section how-it-works-section" id="how-it-works">
+  <div class="section-container">
+    <div class="section-header">
+      <div class="section-badge">✦ Process ✦</div>
+      <h2 class="section-title">Your <em>Sacred Journey</em></h2>
+      <p class="section-subtitle">Four steps to discover the gemstone destined for your energy.</p>
+    </div>
+    <div class="timeline-wrapper">
+      <div class="timeline-line"></div>
+      <div class="timeline-step" data-step="1">
+        <div class="step-icon-wrap">
+          <div class="step-number">01</div>
+          <div class="step-icon">🌟</div>
+        </div>
+        <div class="step-content">
+          <h3 class="step-title">Enter Birth Details</h3>
+          <p class="step-desc">Share your date of birth, time, and location to help us map your cosmic blueprint with precision.</p>
+        </div>
+      </div>
+      <div class="timeline-step" data-step="2">
+        <div class="step-icon-wrap">
+          <div class="step-number">02</div>
+          <div class="step-icon">♈</div>
+        </div>
+        <div class="step-content">
+          <h3 class="step-title">Find Your Zodiac Sign</h3>
+          <p class="step-desc">Our system instantly identifies your zodiac sign, element, ruling planet, and core personality traits.</p>
+        </div>
+      </div>
+      <div class="timeline-step" data-step="3">
+        <div class="step-icon-wrap">
+          <div class="step-number">03</div>
+          <div class="step-icon">◆</div>
+        </div>
+        <div class="step-content">
+          <h3 class="step-title">Get Your Gemstone</h3>
+          <p class="step-desc">Receive a personalized gemstone recommendation aligned with your zodiac energy and life purpose.</p>
+        </div>
+      </div>
+      <div class="timeline-step" data-step="4">
+        <div class="step-icon-wrap">
+          <div class="step-number">04</div>
+          <div class="step-icon">📜</div>
+        </div>
+        <div class="step-content">
+          <h3 class="step-title">Explore Benefits & Care</h3>
+          <p class="step-desc">Discover the healing properties, wearing instructions, and care rituals for your sacred stone.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 4: ZODIAC WHEEL EXPLORER -->
+<section class="section zodiac-wheel-section" id="zodiac-wheel">
+  <div class="section-container">
+    <div class="section-header">
+      <div class="section-badge">✦ Explorer ✦</div>
+      <h2 class="section-title">Interactive <em>Zodiac Wheel</em></h2>
+      <p class="section-subtitle">Click any sign to unveil its cosmic secrets, traits, and gemstone affinities.</p>
+    </div>
+    <div class="wheel-explorer-wrapper">
+      <div class="wheel-canvas-container">
+        <canvas id="zodiacWheelCanvas" width="500" height="500"></canvas>
+        <div class="wheel-center-label">
+          <div class="wheel-center-icon" id="wheel-center-icon">☽</div>
+          <div class="wheel-center-text" id="wheel-center-text">Click a Sign</div>
+        </div>
+      </div>
+      <div class="zodiac-info-panel" id="zodiac-info-panel">
+        <div class="info-panel-placeholder">
+          <div class="ip-icon">✦</div>
+          <h3>Select a Zodiac Sign</h3>
+          <p>Click on any sign in the wheel to explore its traits, element, ruling planet, and compatible gemstones.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 5: GEMSTONE LIBRARY -->
+<section class="section gemstone-library-section" id="gemstone-library">
+  <div class="section-container">
+    <div class="section-header">
+      <div class="section-badge">✦ Collection ✦</div>
+      <h2 class="section-title">Sacred <em>Gemstone Library</em></h2>
+      <p class="section-subtitle">Explore our curated collection of the world's most powerful gemstones.</p>
+    </div>
+    <div class="library-filter-bar">
+      <button class="filter-btn active" data-filter="all" id="filter-all">All Stones</button>
+      <button class="filter-btn" data-filter="fire" id="filter-fire">🔥 Fire</button>
+      <button class="filter-btn" data-filter="earth" id="filter-earth">🌿 Earth</button>
+      <button class="filter-btn" data-filter="air" id="filter-air">💨 Air</button>
+      <button class="filter-btn" data-filter="water" id="filter-water">💧 Water</button>
+    </div>
+    <div class="gemstone-grid" id="gemstone-grid">
+      <!-- Populated by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 6: RECOMMENDATION FORM -->
+<section class="section form-section" id="recommendation-form">
+  <div class="section-container">
+    <div class="section-header">
+      <div class="section-badge">✦ Personal Reading ✦</div>
+      <h2 class="section-title">Generate Your <em>Sacred Reading</em></h2>
+      <p class="section-subtitle">Complete your cosmic profile to receive a deeply personalized gemstone recommendation.</p>
+    </div>
+    <div class="form-wrapper">
+      <form class="recommendation-form" id="rec-form" novalidate>
+        <div class="form-grid">
+          <div class="form-group">
+            <label class="form-label" for="rec-name">Full Name</label>
+            <input type="text" id="rec-name" class="form-input" placeholder="Your sacred name..." required />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="rec-email">Email Address</label>
+            <input type="email" id="rec-email" class="form-input" placeholder="your@email.com" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="rec-dob">Date of Birth</label>
+            <input type="date" id="rec-dob" class="form-input" required />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="rec-time">Birth Time <span class="optional">(Optional)</span></label>
+            <input type="time" id="rec-time" class="form-input" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="rec-zodiac">Your Zodiac Sign</label>
+            <input type="text" id="rec-zodiac" class="form-input" placeholder="Auto-calculated from DOB..." readonly />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="rec-purpose">Life Purpose</label>
+            <select id="rec-purpose" class="form-input form-select" required>
+              <option value="">Select your intention...</option>
+              <option value="career">💼 Career Growth</option>
+              <option value="wealth">💰 Wealth & Prosperity</option>
+              <option value="education">📚 Education & Learning</option>
+              <option value="relationships">💞 Relationships & Love</option>
+              <option value="health">🌿 Health & Healing</option>
+              <option value="confidence">🦁 Confidence & Power</option>
+            </select>
+          </div>
+        </div>
+        <button type="submit" class="btn btn-primary btn-large btn-full" id="generate-btn">
+          <span class="btn-icon">◆</span> Generate My Recommendation
+        </button>
+      </form>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 7: RESULT PAGE -->
+<section class="section result-section hidden" id="result-section">
+  <div class="section-container">
+    <div class="section-header">
+      <div class="section-badge">✦ Your Sacred Stone ✦</div>
+      <h2 class="section-title">Your <em>Gemstone Reading</em></h2>
+      <p class="section-subtitle" id="result-user-greeting">The universe has spoken. Here is your personalized recommendation.</p>
+    </div>
+    <div class="result-content" id="result-content">
+      <!-- Populated by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 8: RECOMMENDATION HISTORY -->
+<section class="section history-section" id="history-section">
+  <div class="section-container">
+    <div class="section-header">
+      <div class="section-badge">✦ Your Journey ✦</div>
+      <h2 class="section-title">Recommendation <em>History</em></h2>
+      <p class="section-subtitle">Your previous gemstone readings, preserved for reflection.</p>
+    </div>
+    <div class="history-timeline" id="history-timeline">
+      <div class="history-empty" id="history-empty">
+        <div class="empty-icon">🔮</div>
+        <p>No readings yet. Generate your first recommendation above.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 9: MATCH SCORE -->
+<section class="section match-score-section hidden" id="match-score-section">
+  <div class="section-container">
+    <div class="section-header">
+      <div class="section-badge">✦ Compatibility ✦</div>
+      <h2 class="section-title">Your <em>Match Score</em></h2>
+      <p class="section-subtitle">See how perfectly your recommended gemstone aligns with your cosmic energy.</p>
+    </div>
+    <div class="match-score-content" id="match-score-content">
+      <!-- Populated by JS -->
+    </div>
+  </div>
+</section>
+
+<!-- SECTION 10: TESTIMONIALS -->
+<section class="section testimonials-section" id="testimonials">
+  <div class="section-container">
+    <div class="section-header">
+      <div class="section-badge">✦ Stories ✦</div>
+      <h2 class="section-title">Sacred <em>Testimonials</em></h2>
+      <p class="section-subtitle">Words from those who have found their stone and transformed their lives.</p>
+    </div>
+    <div class="testimonials-carousel">
+      <div class="testimonials-track" id="testimonials-track">
+        <!-- Populated by JS -->
+      </div>
+      <div class="carousel-controls">
+        <button class="carousel-btn" id="testimonial-prev" aria-label="Previous testimonial">←</button>
+        <div class="carousel-dots" id="carousel-dots"></div>
+        <button class="carousel-btn" id="testimonial-next" aria-label="Next testimonial">→</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer class="footer" id="footer">
+  <canvas class="footer-stars" id="footerStarsCanvas"></canvas>
+  <div class="footer-container">
+    <div class="footer-brand">
+      <div class="footer-logo">
+        <span class="logo-gem">◆</span>
+        <span class="logo-text">GemSoul</span>
+      </div>
+      <p class="footer-tagline">Aligning cosmic energy with the sacred wisdom of gemstones since ancient times.</p>
+      <div class="footer-socials">
+        <a href="#" class="social-btn" aria-label="Instagram">✦</a>
+        <a href="#" class="social-btn" aria-label="Twitter">☽</a>
+        <a href="#" class="social-btn" aria-label="Pinterest">◆</a>
+      </div>
+    </div>
+    <div class="footer-links">
+      <div class="footer-col">
+        <h4>Explore</h4>
+        <a href="#zodiac-calc">Zodiac Finder</a>
+        <a href="#zodiac-wheel">Zodiac Explorer</a>
+        <a href="#gemstone-library">Gem Library</a>
+        <a href="#recommendation-form">Get Recommendation</a>
+      </div>
+      <div class="footer-col">
+        <h4>Sacred Gems</h4>
+        <a href="#">Ruby</a>
+        <a href="#">Emerald</a>
+        <a href="#">Sapphire</a>
+        <a href="#">Amethyst</a>
+        <a href="#">Pearl</a>
+      </div>
+      <div class="footer-col">
+        <h4>Company</h4>
+        <a href="#">About GemSoul</a>
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="admin.html">Admin Dashboard</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 GemSoul. Crafted with cosmic energy. All rights reserved.</p>
+  </div>
+</footer>
+
+<!-- GEMSTONE MODAL -->
+<div class="gem-modal-overlay hidden" id="gem-modal-overlay">
+  <div class="gem-modal" id="gem-modal">
+    <button class="modal-close" id="modal-close" aria-label="Close modal">✕</button>
+    <div class="modal-content" id="modal-content"></div>
+  </div>
+</div>
+
+<script src="js/api.js"></script>
+<script src="js/data.js"></script>
+<script src="js/constellation.js"></script>
+<script src="js/zodiac.js"></script>
+<script src="js/wheel.js"></script>
+<script src="js/gemstones.js"></script>
+<script src="js/recommendation.js"></script>
+<script src="js/testimonials.js"></script>
+<script src="js/app.js"></script>
+</body>
+</html>
